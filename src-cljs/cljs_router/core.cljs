@@ -19,7 +19,7 @@
 ;; are ignored)
 (defn- split-path [path]
   (-> (string/replace path #"^/" "")
-      (string/split "/")))
+      (string/split #"/")))
 
 
 ;; Associates a parameter name with a portion of a URL.
@@ -42,11 +42,11 @@
 (defn- assoc-route [routes [hd & tl] val]
   (cond
     (nil? hd)
-      val
+      (assoc routes "" val)
 
     (string/starts-with? hd ":")
       (-> (assoc-param-name routes hd :name)
-          (assoc :routes (assoc-route (get routes :routes {}) (or tl [""]) val)))
+          (assoc :routes (assoc-route (get routes :routes {}) tl val)))
 
     (string/starts-with? hd "*")
       (-> (assoc-param-name routes hd :*name)
@@ -79,7 +79,7 @@
     The URL `/foo/baz` would produce `[:ident {:id \"baz\"}]`
     The URL `/foo/baz/bar` would produce `[:etc {:stuff \"baz/bar\"}]`"
   ([routes url]
-    (let [[path query] (string/split url "?")
+    (let [[path query] (string/split url #"\?")
           params (or (parse-query query) {})
           url-pieces (split-path path)]
       (or (route routes url-pieces params) [:not-found params])))

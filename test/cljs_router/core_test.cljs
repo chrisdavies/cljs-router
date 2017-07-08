@@ -31,6 +31,16 @@
            (router/route rules "waldo")))))
 
 
+(deftest handles-similar-static-routes
+  (let [rules (router/make-routes
+                {"recipe"         :recipe
+                 "recipe/show"    :recipe-show})]
+    (is (= [:recipe {}]
+           (router/route rules "recipe")))
+    (is (= [:recipe-show {}]
+           (router/route rules "recipe/show")))))
+
+
 (deftest handles-precedence
   (let [rules (router/make-routes
                 {"hi/there"      :hi-there
