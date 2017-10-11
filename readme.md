@@ -12,7 +12,7 @@ A ClojureScript library designed to handle client-side routing in an order-agnos
 
 ## Usage
 
-Add `[cljs-router "0.0.1"]` to your `project.clj`.
+Add `[cljs-router "0.0.3"]` to your `project.clj`.
 
 Define your routes using `make-routes` and route URLs using `route`. See the sample code below:
 
@@ -50,7 +50,7 @@ Note: In the examples above (as in my own re-frame projects), the route values a
 such as `:show-user` but they could be anything (e.g. `"show-user"` or `(fn [] (println "Hi!"))`).
 
 
-As of `0.0.1`, you have to wire this up to whatever browser events you want (e.g. hash change or push state or whatever). Convenience functions may be added for these in future releases.
+As of `0.0.3`, you have to wire this up to whatever browser events you want (e.g. hash change or push state or whatever). Convenience functions may be added for these in future releases.
 
 
 ## Testing
