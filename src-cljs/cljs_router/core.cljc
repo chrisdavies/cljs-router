@@ -42,15 +42,15 @@
 (defn- assoc-route [routes [hd & tl] val]
   (cond
     (nil? hd)
-      (assoc routes "" val)
+    (assoc routes "" val)
 
     (string/starts-with? hd ":")
-      (-> (assoc-param-name routes hd :name)
-          (assoc :routes (assoc-route (get routes :routes {}) tl val)))
+    (-> (assoc-param-name routes hd :name)
+        (assoc :routes (assoc-route (get routes :routes {}) tl val)))
 
     (string/starts-with? hd "*")
-      (-> (assoc-param-name routes hd :*name)
-          (assoc :*val val))
+    (-> (assoc-param-name routes hd :*name)
+        (assoc :*val val))
 
     :else
       (assoc routes hd (assoc-route (get routes hd {}) tl val))))
@@ -79,16 +79,16 @@
     The URL `/foo/baz` would produce `[:ident {:id \"baz\"}]`
     The URL `/foo/baz/bar` would produce `[:etc {:stuff \"baz/bar\"}]`"
   ([routes url]
-    (let [[path query] (string/split url #"\?")
-          params (or (parse-query query) {})
-          url-pieces (split-path path)]
-      (or (route routes url-pieces params) [:not-found params])))
+   (let [[path query] (string/split url #"\?")
+         params (or (parse-query query) {})
+         url-pieces (split-path path)]
+     (or (route routes url-pieces params) [:not-found params])))
   ([routes [hd & tl :as url] params]
-    (cond
-      (keyword? routes) (when (nil? hd) [routes params])
-      (nil? hd)         (some-> (get routes "")
-                                (vector params))
-      (map? routes)     (or (route (routes hd) tl params)
-                            (route (:routes routes) tl (assoc params (:name routes) (js/decodeURIComponent hd)))
-                            (some-> (:*val routes) (vector (assoc params (:*name routes) (string/join "/" url)))))
-      :else             nil)))
+   (cond
+     (keyword? routes) (when (nil? hd) [routes params])
+     (nil? hd)         (some-> (get routes "")
+                               (vector params))
+     (map? routes)     (or (route (routes hd) tl params)
+                           (route (:routes routes) tl (assoc params (:name routes) (js/decodeURIComponent hd)))
+                           (some-> (:*val routes) (vector (assoc params (:*name routes) (string/join "/" url)))))
+     :else             nil)))
