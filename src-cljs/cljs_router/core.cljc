@@ -2,6 +2,10 @@
   (:require [clojure.string :as string]))
 
 
+(defn- decode-uri-component [uri]
+   #?(:clj (java.net.URLDecoder/decode uri)
+      :cljs (js/decodeURIComponent uri)))
+
 ;; Extracts the query section of a URL and returns a map of {:key "value"}
 ;; `s` is the query portion of the URL (e.g. if the URL was "foo.bar?hi=there",
 ;; s would be "hi=there" and the result would be {:hi "there"})
@@ -9,7 +13,7 @@
   (when (not (empty? s))
     (->> (string/split s "&")
          (map #(string/split % "="))
-         (map (fn [[k v]] [(keyword k) (js/decodeURIComponent v)]))
+         (map (fn [[k v]] [(keyword k) (decode-uri-component v)]))
          (into {}))))
 
 
@@ -89,6 +93,6 @@
      (nil? hd)         (some-> (get routes "")
                                (vector params))
      (map? routes)     (or (route (routes hd) tl params)
-                           (route (:routes routes) tl (assoc params (:name routes) (js/decodeURIComponent hd)))
+                           (route (:routes routes) tl (assoc params (:name routes) (decode-uri-component hd)))
                            (some-> (:*val routes) (vector (assoc params (:*name routes) (string/join "/" url)))))
      :else             nil)))
