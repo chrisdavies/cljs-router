@@ -12,7 +12,7 @@ A ClojureScript library designed to handle client-side routing in an order-agnos
 
 ## Usage
 
-Add `[cljs-router "0.0.3"]` to your `project.clj`.
+Add `[cljs-router "0.1.0"]` to your `project.clj`.
 
 Define your routes using `make-routes` and route URLs using `route`. See the sample code below:
 
