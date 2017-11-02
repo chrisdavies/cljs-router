@@ -1,4 +1,4 @@
-(defproject cljs-router "0.1.0"
+(defproject cljs-router "0.1.1"
   :url "http://github.com/chrisdavies/cljs-router"
   :license {:name "MIT"}
   :description "A simple, order agnostic Clojure(Script) router"

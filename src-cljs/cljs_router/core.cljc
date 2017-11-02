@@ -11,8 +11,8 @@
 ;; s would be "hi=there" and the result would be {:hi "there"})
 (defn- parse-query [s]
   (when (not (empty? s))
-    (->> (string/split s "&")
-         (map #(string/split % "="))
+    (->> (string/split s #"&")
+         (map #(string/split % #"="))
          (map (fn [[k v]] [(keyword k) (decode-uri-component v)]))
          (into {}))))
 
